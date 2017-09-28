@@ -27,7 +27,11 @@ if(MSVC)
     endif()
     if(TARGET ${GLOG_LIBRARY})
       get_target_property(GLOG_INCLUDE_DIR ${GLOG_LIBRARY} INTERFACE_INCLUDE_DIRECTORIES)
-    endif()
+      get_target_property(GLOG_TYPE ${GLOG_LIBRARY} TYPE)
+      if("${GLOG_TYPE}" STREQUAL "SHARED_LIBRARY")
+        add_definitions(-DGLOG_IS_A_DLL=1)
+      endif()
+	endif()
 else()
     find_library(GLOG_LIBRARY glog
         PATHS ${GLOG_ROOT_DIR}
